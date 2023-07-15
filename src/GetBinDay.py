@@ -22,11 +22,11 @@ headers = {
 
 def GetBinDay():
     logging.info("Getting latest bin day infomation")
-    ctx = create_urllib3_context()
-    ctx.load_default_certs()
-    ctx.options |= 0x4
+    ssl_ctx = create_urllib3_context()
+    ssl_ctx.load_default_certs()
+    ssl_ctx.options |= 0x4
 
-    with urllib3.PoolManager(ssl_context=ctx) as http:
+    with urllib3.PoolManager(ssl_context=ssl_ctx) as http:
         response = http.request("GET", BIN_DAY_URL)
     return json.loads(response.data.decode("utf-8"))
 
