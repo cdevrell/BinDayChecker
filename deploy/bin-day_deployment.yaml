@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bin-day-checker
+  namespace: home-assistant
+spec:
+  selector:
+    matchLabels:
+      app: bin-day-checker
+  template:
+    metadata:
+      labels:
+        app: bin-day-checker
+    spec:
+      containers:
+      - name: bin-day-checker
+        image: CHANGEME/bin-day-checker:latest
+        imagePullPolicy: Always
+        env:
+          - name: BIN_DAY_URL
+            valueFrom:
+              secretKeyRef:
+                name: bin-day
+                key: BIN_DAY_URL
+          - name: HA_URL
+            valueFrom:
+              secretKeyRef:
+                name: bin-day
+                key: HA_URL
+          - name: HA_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: bin-day
+                key: HA_TOKEN
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "50m"
